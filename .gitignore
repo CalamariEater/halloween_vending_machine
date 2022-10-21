@@ -1,0 +1,17 @@
+.env
+.vscode
+Procfile.local
+Pipfile
+Pipfile.lock
+pipenv_file
+venv/
+
+# Packages
+__pycache__/
+__pycache__
+app\__pycache__
+
+.dockerignore
+Dockerfile
+boot.sh
+__pycache__/
