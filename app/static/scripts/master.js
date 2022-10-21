@@ -5,10 +5,15 @@ const display = document.getElementById("display");
 const input_message = document.getElementById("message");
 // URLS
 //const URL_BASE = 'http://127.0.0.1:5000/';
-const URL_BASE = 'https://vending-lmao.herokuapp.com/';
+const URL_BASE = 'http://192.168.0.150:5000/';
+//const URL_BASE = 'https://vending-lmao.herokuapp.com/';
 
 var item = '';
+var the_msg = '';
 var TTS = false;
+var speech = new SpeechSynthesisUtterance();
+const tts_text = 'TTS';
+
 
 input_poll = setInterval(function(){
     // update here
@@ -51,9 +56,32 @@ b_marine.addEventListener('click', function(){
     display.innerHTML = '';
 })
 
+var b_talk = document.getElementById('talk');
+b_talk.addEventListener('click', function(){
+    console.log(input_message.value);
+    if (input_message.value != ''){
+        if (TTS) {
+            speech.text = input_message.value;
+            window.speechSynthesis.speak(speech);
+        }
+    } else {
+        if (TTS) {
+            speech.text = the_msg;
+            window.speechSynthesis.speak(speech);
+        }
+    }
+
+})
+
 var b_tts = document.getElementById('tts');
 b_tts.addEventListener('click', function(){
     TTS = !TTS;
+    if (TTS) {
+        b_tts.innerText = tts_text + ' ON';
+    } else {
+        b_tts.innerText = tts_text;
+    }
+
 })
 
 
@@ -87,10 +115,11 @@ function receive(){
     }    
 }
 
-function send(payload, speak = false, time = None) {
+function send(payload, speak = false, time = undefined) {
     const Http = new XMLHttpRequest();
     const url = URL_BASE + "master/send";
 
+    the_msg = payload;
     console.log(`URL: ${url}`);
 
     var talk = TTS;
@@ -106,13 +135,25 @@ function send(payload, speak = false, time = None) {
 
     console.log("THE TIME: AHHHH ~~~ " + time);
 
+
     Http.open("POST", url, false);
     Http.setRequestHeader('Accept', 'application/json');
     Http.setRequestHeader('Content-Type', 'application/json');
 
     Http.send(JSON.stringify(primed_payload));
 
-    Http.onreadystatechange = (e) => {
-        console.log(Http.responseText)
-    }
+    // Http.onreadystatechange = (e) => {
+    //     console.log(Http.responseText)
+    // }
+    if (Http.status === 200) {
+        //console.log(Http.responseText)
+        // if (talk) {
+        //     speech.text = payload;
+        //     window.speechSynthesis.speak(speech);
+        // }
+    
+        console.log("MASTER: Message SENT!!!");
+    } else {
+        console.log(Http.status)
+    }   
 }

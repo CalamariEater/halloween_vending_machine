@@ -10,6 +10,13 @@ ITEM = 'item'
 NEW = False
 MASTER_NEW = False
 
+the_item = ''
+the_payload = {
+    "message": '',
+    "TTS": False,
+    "time": None
+}
+
 @app.route('/')
 @app.route('/machine')
 def machine():
@@ -26,6 +33,7 @@ def master():
 @app.route('/machine/send', methods=['POST'])
 def machineSend():
     global MASTER_NEW
+    global the_item
     if request.method == 'POST':
         item = request.json
         sesh = session.get(ITEM, None)
@@ -38,6 +46,7 @@ def machineSend():
             session[ITEM] = ''
             #sesh = session.get(PAYLOAD)
         session[ITEM] = item
+        the_item = item
         session.modified = True
         MASTER_NEW = True
         response = jsonify(success=True)
@@ -51,19 +60,24 @@ def machineReceive():
     global NEW
     if request.method == 'GET':
         if NEW is True:
-            msg = session.get(PAYLOAD, None)
-            if msg is None:
-                # Do something
-                print('creating sesh')
-                #session[PAYLOAD] = ''
-                session[PAYLOAD] = {
-                    "message": '',
-                    "TTS": False
-                }
-                msg = session.get(PAYLOAD)
-            response = msg
+            # msg = session.get(PAYLOAD, None)
+            # if msg is None:
+            #     # Do something
+            #     print('creating sesh')
+            #     #session[PAYLOAD] = ''
+            #     session[PAYLOAD] = {
+            #         "message": '',
+            #         "TTS": False
+            #     }
+            #     msg = session.get(PAYLOAD)
+            # response = msg
+
+            response = the_payload
+
+            print(response)
+
             NEW = False
-            response = json.dumps(msg)
+            response = json.dumps(response)
             return Response(response, status=200)
         return Response(None, status=200) # no change
     else:
@@ -83,6 +97,9 @@ def masterReceive():
                 session[ITEM] = ''
                 msg = session.get(ITEM)
             response = msg
+
+            response = the_item
+
             MASTER_NEW = False
             #print(response)
             return Response(response, status=200)
@@ -95,11 +112,12 @@ def masterReceive():
 @app.route('/master/send', methods=['POST'])
 def masterSend():
     global NEW
+    global the_payload
     if request.method == 'POST':
         payload = request.json
         message = payload["message"]
         tts = payload["TTS"]
-        time = payload["time"]
+        time = payload.get("time")
         sesh = session.get(PAYLOAD, None)
         print(payload)
         if sesh is not None:
@@ -120,6 +138,13 @@ def masterSend():
             "TTS": tts,
             "time": time
         }
+
+        the_payload = {
+            "message": message,
+            "TTS": tts,
+            "time": time
+        }
+
         session.modified = True
         NEW = True
         response = jsonify(success=True)
