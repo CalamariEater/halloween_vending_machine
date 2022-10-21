@@ -1,0 +1,64 @@
+@font-face{
+    font-family:'digital';
+    src: url("/static/fonts/digital-7.regular.ttf");
+}
+
+body {
+    background-color: darkgray;
+}
+
+.display {
+    margin: 10px;
+    background-color: black;
+    color: white;
+    justify-content: flex-start;
+    flex-grow: 5;
+    border-radius: 10px;
+    font-size: xxx-large;
+    font-family: 'digital';
+    padding: 10px;
+    min-height: 47px;
+}
+
+.container {
+    display: flex;
+    margin: 10%;
+    flex-wrap: wrap;
+}
+
+.display-container {
+    display: flex;
+    background-color: silver;
+    flex-grow: 5;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.keypad {
+    background-color: silver;
+    display: flex;
+    padding: 5px;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    border-radius: 10px;    
+}
+
+.button {
+    background-color: black;
+    color: white;
+    width: 30%;
+    height: 100px;
+    border-radius: 10px;
+    font-size: xxx-large;
+    border-color: white;
+    border-width: 5px;
+}
+
+#enter {
+    background-color: green;
+}
+
+#delete {
+    background-color: red;
+}
