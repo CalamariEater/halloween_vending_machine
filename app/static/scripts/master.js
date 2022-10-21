@@ -4,7 +4,8 @@ var input_poll_delay = 2;
 const display = document.getElementById("display");
 const input_message = document.getElementById("message");
 // URLS
-const URL_BASE = 'http://127.0.0.1:5000/';
+//const URL_BASE = 'http://127.0.0.1:5000/';
+const URL_BASE = 'https://vending-lmao.herokuapp.com/';
 
 var item = '';
 var TTS = false;

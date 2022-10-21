@@ -22,7 +22,8 @@ var wait_timer_delay = 8;
 
 
 // URLS
-const URL_BASE = 'http://127.0.0.1:5000/';
+//const URL_BASE = 'http://127.0.0.1:5000/';
+const URL_BASE = 'https://vending-lmao.herokuapp.com/';
 
 
 const STATES = {
